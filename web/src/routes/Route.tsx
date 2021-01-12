@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 
 import { useAuth } from '../hooks/auth';
-
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   component: React.ComponentType;
@@ -16,15 +15,13 @@ const Route: React.FC<RouteProps> = ({
   isPrivate = false,
   component: Component,
   ...rest }) => {
-  const { mappedUser } = useAuth();
-
-  console.log(mappedUser, isPrivate);
+  const { user } = useAuth();
 
   return (
     <ReactDOMRoute
       {...rest}
       render={({ location }) => {
-        return isPrivate === !!mappedUser ? (
+        return isPrivate === !!user ? (
           <Component />
         ) : (
           <Redirect
