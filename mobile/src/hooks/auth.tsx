@@ -10,7 +10,7 @@ import api from '../services/api';
 
 interface AuthState {
   token: string;
-  mappedUser: object;
+  user: object;
 }
 
 interface SignInCredentials {
@@ -19,7 +19,7 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  mappedUser: object;
+  user: object;
   loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
@@ -36,13 +36,13 @@ export const AuthProvider: React.FC = ({ children }) =>  {
   useEffect(() => {
     async function loadStoragedData(): Promise<void> {
       const [ token, user ] = await AsyncStorage.multiGet([
-        '@GoBarber:token', '@GoBarber:mappedUser'
+        '@GoBarber:token', '@GoBarber:user'
       ]);
 
       if (token[1] && user[1]) {
         setData({
           token: token[1],
-          mappedUser: JSON.parse(user[1]),
+          user: JSON.parse(user[1]),
         });
       }
 
@@ -57,20 +57,20 @@ export const AuthProvider: React.FC = ({ children }) =>  {
       email, password
     });
 
-    const { token, mappedUser } = response.data;
+    const { token, user } = response.data;
 
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
-      ['@GoBarber:mappedUser', JSON.stringify(mappedUser)]
+      ['@GoBarber:user', JSON.stringify(user)]
     ])
 
-    setData({ token, mappedUser });
+    setData({ token, user });
   }, []);
 
   const signOut = useCallback( async () => {
     await AsyncStorage.multiRemove([
       '@GoBarber:token',
-      '@GoBarber:mappedUser',
+      '@GoBarber:user',
     ]);
 
     setData({} as AuthState);
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC = ({ children }) =>  {
 
   return (
     <AuthContext.Provider value={{
-      mappedUser: data.mappedUser, loading, signIn, signOut }}>
+      user: data.user, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )
