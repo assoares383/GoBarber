@@ -1,5 +1,4 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
-
 export default class CreateUserTokens1611237597413 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
