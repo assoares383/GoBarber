@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { startOfHour } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
@@ -5,8 +6,10 @@ import AppError from '@shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentRepository from '../repositories/IAppointmentsRepository';
+
 interface RequestDTO {
   provider_id: string;
+  user_id: string;
   date: Date;
 }
 @injectable()
@@ -14,9 +17,13 @@ class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentRepository,
-  ) {}
+  ) { }
 
-  public async execute({ date, provider_id }: RequestDTO): Promise<Appointment> {
+  public async execute({
+    date,
+    provider_id,
+    user_id,
+  }: RequestDTO): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
@@ -29,6 +36,7 @@ class CreateAppointmentService {
 
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 
