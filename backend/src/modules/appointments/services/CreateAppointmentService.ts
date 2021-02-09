@@ -4,13 +4,14 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentRepository from '../repositories/IAppointmentsRepository';
 
-interface RequestDTO {
+import Appointment from '../infra/typeorm/entities/Appointment';
+
+interface IRequest {
+  date: Date;
   provider_id: string;
   user_id: string;
-  date: Date;
 }
 @injectable()
 class CreateAppointmentService {
@@ -23,7 +24,7 @@ class CreateAppointmentService {
     date,
     provider_id,
     user_id,
-  }: RequestDTO): Promise<Appointment> {
+  }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
     if (isBefore(appointmentDate, Date.now())) {
@@ -41,7 +42,7 @@ class CreateAppointmentService {
     }
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
-      appointmentDate,
+      appointmentDate
     );
 
     if (findAppointmentInSameDate) {
