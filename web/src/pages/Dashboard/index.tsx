@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { isToday, format, parseISO } from 'date-fns';
+import { isToday, format, parseISO, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -52,7 +52,7 @@ const Dashboard: React.FC = () => {
 
   const handleDateChange = useCallback(
     (day: Date, modifiers: DayModifiers) => {
-      if (modifiers.available) {
+      if (modifiers.available && !modifiers.disabled) {
         setSelectedDate(day);
       }
     }, []);
@@ -119,13 +119,19 @@ const Dashboard: React.FC = () => {
     return appointments.filter(appointment => {
       return parseISO(appointment.date).getHours() < 12;
     })
-  }, [appointments])
+  }, [appointments]);
 
   const afternoonAppointment = useMemo(() => {
     return appointments.filter(appointment => {
       return parseISO(appointment.date).getHours() >= 12;
     })
-  }, [appointments])
+  }, [appointments]);
+
+  const nextAppointment = useMemo(() => {
+    return appointments.find(appointment => {
+      isAfter(parseISO(appointment.date), new Date())
+    })
+  }, [appointments]);
 
   return (
     <Container>
@@ -158,24 +164,30 @@ const Dashboard: React.FC = () => {
             <span>{selectedWeekDay}</span>
           </p>
 
-          <NextAppointment>
-            <strong>Atendimento a seguir</strong>
+          {isToday(selectedDate) && nextAppointment && (
+            <NextAppointment>
+              <strong>Agendamento a seguir</strong>
 
-            <div>
-              <img src="https://avatars.githubusercontent.com/u/15836394?s=88&u=70673f20d41e1ee784577c36affb639d453a3552&v=4"
-              alt="Alexandre Soares" />
+              <div>
+                <img src={nextAppointment.user.avatar_url}
+                alt={nextAppointment.user.name} />
 
-              <strong>Alexandre Soares</strong>
-              <span>
-                <FiClock />
-                08:00
-              </span>
+                <strong>{nextAppointment.user.name}</strong>
+                <span>
+                  <FiClock />
+                  {nextAppointment.hourFormatted}
+                </span>
 
-            </div>
-          </NextAppointment>
+              </div>
+            </NextAppointment>
+          )}
 
           <Section>
             <strong>Manhã</strong>
+
+            {morningAppointment.length === 0 && (
+              <p>Nenhum agendamento neste período</p>
+            )}
 
             {morningAppointment.map(appointment => (
               <Appointment key={appointment.id}>
@@ -196,6 +208,10 @@ const Dashboard: React.FC = () => {
 
           <Section>
             <strong>Tarde</strong>
+
+            {afternoonAppointment.length === 0 && (
+              <p>Nenhum agendamento neste período</p>
+            )}
 
             {afternoonAppointment.map(appointment => (
               <Appointment key={appointment.id}>
