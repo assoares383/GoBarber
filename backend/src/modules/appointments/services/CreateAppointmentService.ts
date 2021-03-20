@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 
 import AppError from '../../../shared/errors/AppError';
 
-import Appointment from '../entities/Appointments';
+import Appointment from '../infra/typeorm/entities/Appointments';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
 interface RequestDTO {
