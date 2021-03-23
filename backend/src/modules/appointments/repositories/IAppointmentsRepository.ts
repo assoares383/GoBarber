@@ -1,4 +1,4 @@
-import Appointment from '../infra/typeorm/entities/Appointments';
+import Appointment from '../infra/typeorm/entities/Appointment';
 import ICreateAppointmentDTO from './../dtos/ICreateAppointmentDTO';
 interface IAppointmentsRespository {
   create(data: ICreateAppointmentDTO): Promise<Appointment>;
