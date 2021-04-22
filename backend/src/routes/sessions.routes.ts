@@ -10,9 +10,9 @@ sessionsRouter.post('/', async (request, response) => {
 
     const authenticateUserService = new AuthenticateUserService();
 
-    const {user, token} = await authenticateUserService.execute({
+    const { user, token } = await authenticateUserService.execute({
       email,
-      password
+      password,
     });
 
     const userWithoutPassword = {
@@ -22,10 +22,10 @@ sessionsRouter.post('/', async (request, response) => {
       created_at: user.created_at,
       updated_at: user.updated_at,
     };
-    
+
     return response.json({ userWithoutPassword, token });
-  } catch(err) {
-    return response.status(400).json({ error: err.message });
+  } catch (err) {
+    return response.status(err.statusCode).json({ error: err.message });
   }
 });
 
