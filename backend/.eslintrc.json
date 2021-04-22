@@ -23,6 +23,11 @@
       "@typescript-eslint/camelcase": "off",
       "camelcase": "off",
       "prettier/prettier": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error", {
+          "argsIgnorepattern": "_"
+        }
+      ],
       "@typescript-eslint/no-use-before-define": [
         "error"
       ],
