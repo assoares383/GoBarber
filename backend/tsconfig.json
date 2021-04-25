@@ -13,6 +13,12 @@
     "forceConsistentCasingInFileNames": true,
     "typeRoots": [
       "./src/@types",
-    ]
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@config/*": ["config/*"],
+      "@shared/*": ["shared/*"],
+    }
   }
 }
