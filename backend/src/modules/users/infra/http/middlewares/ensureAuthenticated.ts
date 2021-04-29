@@ -36,7 +36,7 @@ function ensureAuthenticated(
 
     return next();
   } catch (err) {
-    throw new AppError('Invalid JWT token');
+    throw new AppError('Invalid JWT token', 401);
   }
 }
 
