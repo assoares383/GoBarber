@@ -1,8 +1,8 @@
-.vscode
+.vscode/
 node_modules
 .env
 temp/
-coverage
+coverage/
 
 tmp/*
 !tmp/.gitkeep
