@@ -1,5 +1,6 @@
 import { container } from 'tsyringe';
 import { Request, Response } from "express";
+import { classToClass } from 'class-transformer';
 
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
@@ -44,7 +45,7 @@ export default class UsersController {
       updated_at: user.updated_at,
     };
 
-    return response.json(userWithoutPassword);
+    return response.json(classToClass(userWithoutPassword));
   }
 
   

@@ -1,9 +1,10 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 
 import express, { NextFunction, Request, Response } from 'express';
-import 'express-async-errors';
 import cors from 'cors';
 import { errors } from 'celebrate';
+import 'express-async-errors';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
@@ -36,10 +37,6 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     status: 'error',
     message: 'Internal server error',
   });
-});
-
-app.get('/', (request, response) => {
-  return response.json({ message: 'Hello World 2021' });
 });
 
 app.listen(3333, () => {
