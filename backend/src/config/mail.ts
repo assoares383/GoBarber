@@ -12,7 +12,7 @@ export default {
   driver: process.env.MAIL_DRIVER || 'ethereal',
   defaults: {
     from: {
-      email: 'assoares383@tcodepro.dev',
+      email: 'alexandre.soares@tcode.com.br',
       name: 'Alexandre Soares'
     }
   }
