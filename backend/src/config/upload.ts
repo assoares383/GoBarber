@@ -3,26 +3,28 @@ import crypto from 'crypto';
 import multer, { StorageEngine } from 'multer';
 
 interface IUploadConfig {
-  driver:  'disk' | 's3';
+  driver: 'disk' | 's3';
 
   tmpFolder: string;
   uploadsFolder: string;
 
   multer: {
     storage: StorageEngine;
-  }
+  };
 
   config: {
+    disk: {};
+
     aws: {
-      bucket: string
-    }
-  }
+      bucket: string;
+    };
+  };
 }
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
 export default {
-  driver: process.env.STORAGE_PROVIDER,
+  driver: process.env.STORAGE_DRIVER,
 
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
@@ -31,9 +33,9 @@ export default {
     storage: multer.diskStorage({
       destination: tmpFolder,
       filename(request, file, callback) {
-        const fileHash = crypto.randomBytes(10).toString('hex');
-        const fileName = `${fileHash}-${file.originalname}`;
-  
+        const filehash = crypto.randomBytes(10).toString('hex');
+        const fileName = `${filehash}-${file.originalname}`;
+
         return callback(null, fileName);
       },
     }),
@@ -42,8 +44,7 @@ export default {
   config: {
     disk: {},
     aws: {
-      bucket: 'app-tcode'
-    }
-  }
-
+      bucket: 'app-tcode',
+    },
+  },
 } as IUploadConfig;
