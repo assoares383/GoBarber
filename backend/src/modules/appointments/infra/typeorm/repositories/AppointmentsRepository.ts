@@ -57,6 +57,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
           '${parsedDay}-${parsedMonth}-${year}'`  
         ),
       },
+      relations: ['user'],
     });
 
     return appointments;
