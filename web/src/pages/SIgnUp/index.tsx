@@ -35,8 +35,6 @@ const SignUp: React.FC = () => {
           />
 
           <Button type="submit">Cadastrar</Button>
-
-          <p>Esqueci minha senha</p>
         </Form>
 
         <p>
