@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
+import { Form } from '@unform/web';
 
 import lgoGoBarber from '../../assets/logo.svg';
 
@@ -8,34 +9,42 @@ import Button from '../../components/Button';
 
 import { Background, Container, Content } from './styles';
 
-const SignUp: React.FC = () => (
-  <Container>
-    <Background />
-    <Content>
-      <img src={lgoGoBarber} alt="GoBarber" />
+const SignUp: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  function handleSubmit(data: object): void {
+    // eslint-disable-next-line no-console
+    console.log(data);
+  }
 
-      <form>
-        <h1>Faça seu cadastro</h1>
+  return (
+    <Container>
+      <Background />
+      <Content>
+        <img src={lgoGoBarber} alt="GoBarber" />
 
-        <Input icon={FiUser} name="name" placeholder="Nome" />
-        <Input icon={FiMail} name="email" placeholder="E-mail" />
-        <Input
-          icon={FiLock}
-          name="password"
-          type="password"
-          placeholder="Senha"
-        />
+        <Form onSubmit={handleSubmit}>
+          <h1>Faça seu cadastro</h1>
 
-        <Button type="submit">Cadastrar</Button>
+          <Input icon={FiUser} name="name" placeholder="Nome" />
+          <Input icon={FiMail} name="email" placeholder="E-mail" />
+          <Input
+            icon={FiLock}
+            name="password"
+            type="password"
+            placeholder="Senha"
+          />
 
-        <p>Esqueci minha senha</p>
-      </form>
+          <Button type="submit">Cadastrar</Button>
 
-      <p>
-        <FiArrowLeft /> Voltar para logon
-      </p>
-    </Content>
-  </Container>
-);
+          <p>Esqueci minha senha</p>
+        </Form>
+
+        <p>
+          <FiArrowLeft /> Voltar para logon
+        </p>
+      </Content>
+    </Container>
+  );
+};
 
 export default SignUp;
