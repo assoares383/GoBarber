@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SignUp from './pages/SIgnUp';
+import SignUp from './pages/SignUp';
 
 import GlobalStyle from './styles/global';
 
