@@ -1,8 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useContext } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+
+import AuthContext from '../../context/AuthContext';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import lgoGoBarber from '../../assets/logo.svg';
@@ -14,6 +16,11 @@ import { AnimationContainer, Background, Container, Content } from './styles';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+
+  const auth = useContext(AuthContext);
+
+  // eslint-disable-next-line no-console
+  console.log(auth);
 
   const handleSubmit = useCallback(async data => {
     formRef.current?.setErrors({});
@@ -58,12 +65,12 @@ const SignIn: React.FC = () => {
 
             <Button type="submit">Entrar</Button>
 
-            <p>Esqueci minha senha</p>
+            <a href="/">Esqueci minha senha</a>
           </Form>
 
-          <p>
+          <a href="/">
             <FiLogIn /> Criar Conta
-          </p>
+          </a>
         </AnimationContainer>
       </Content>
       <Background />
