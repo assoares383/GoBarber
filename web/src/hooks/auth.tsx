@@ -2,10 +2,15 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import api from '../services/api';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
 interface AuthState {
   token: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  user: object;
+  user: User;
 }
 
 interface SignInCredentials {
@@ -14,9 +19,9 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  user: object;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -47,11 +52,19 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({ token, user });
   }, []);
 
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@GoBarber:token');
+    localStorage.removeItem('@GoBarber:user');
+
+    setData({} as AuthState);
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         user: data.user,
         signIn,
+        signOut,
       }}
     >
       {children}
