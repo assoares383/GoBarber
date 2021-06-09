@@ -1,9 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiLogIn, FiMail } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
 import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -20,6 +21,7 @@ interface ForgotPasswordFormData {
 }
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
@@ -30,6 +32,8 @@ const ForgotPassword: React.FC = () => {
       formRef.current?.setErrors({});
 
       try {
+        setLoading(true);
+
         const schema = Yup.object().shape({
           email: Yup.string()
             .required('E-mail obrigatorio')
@@ -40,7 +44,16 @@ const ForgotPassword: React.FC = () => {
           abortEarly: false,
         });
 
-        // recuperar senha
+        await api.post('/password/forgot', {
+          email: data.email,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'E-mail de recuperacao enviado',
+          description:
+            'Enviamos um e-mail para confirmar a recuperacao de senha, cheque sua caixa de entrada',
+        });
 
         // history.push('/dashboard');
       } catch (err) {
@@ -56,6 +69,8 @@ const ForgotPassword: React.FC = () => {
           description:
             'Ocorreu um erro ao tentar realizar a recuperacao de senha, tente novamente.',
         });
+      } finally {
+        setLoading(false);
       }
     },
     [addToast],
