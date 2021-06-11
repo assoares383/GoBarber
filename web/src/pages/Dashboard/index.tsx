@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiClock, FiPower } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
@@ -12,12 +12,17 @@ import {
   Schedule,
   Calendar,
   NextAppointment,
+  Section,
+  Appointment,
 } from './styles';
 
 import logoImg from '../../assets/logo.svg';
 
 const Dashboard: React.FC = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const { signOut, user } = useAuth();
+
   return (
     <Container>
       <Header>
@@ -63,6 +68,76 @@ const Dashboard: React.FC = () => {
               </span>
             </div>
           </NextAppointment>
+
+          <Section>
+            <strong>Manhã</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                10:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/15836394?v=4"
+                  alt="Alexandre Soares"
+                />
+
+                <strong>Alexandre Soares</strong>
+              </div>
+            </Appointment>
+            <Appointment>
+              <span>
+                <FiClock />
+                10:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/15836394?v=4"
+                  alt="Alexandre Soares"
+                />
+
+                <strong>Alexandre Soares</strong>
+              </div>
+            </Appointment>
+          </Section>
+
+          <Section>
+            <strong>Tarde</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                10:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/15836394?v=4"
+                  alt="Alexandre Soares"
+                />
+
+                <strong>Alexandre Soares</strong>
+              </div>
+            </Appointment>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                10:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/15836394?v=4"
+                  alt="Alexandre Soares"
+                />
+                <strong>Alexandre Soares</strong>
+              </div>
+            </Appointment>
+          </Section>
         </Schedule>
         <Calendar />
       </Content>
