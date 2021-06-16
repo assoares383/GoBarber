@@ -8,6 +8,7 @@ interface User {
   email: string;
   avatar_url: string;
 }
+
 interface AuthState {
   token: string;
   user: User;
@@ -73,17 +74,12 @@ const AuthProvider: React.FC = ({ children }) => {
         user,
       });
     },
-    [setData, data.token],
+    [data.token],
   );
 
   return (
     <AuthContext.Provider
-      value={{
-        user: data.user,
-        signIn,
-        signOut,
-        updateUser,
-      }}
+      value={{ user: data.user, signIn, signOut, updateUser }}
     >
       {children}
     </AuthContext.Provider>
