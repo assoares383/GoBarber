@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { 
     Image, 
     KeyboardAvoidingView, 
@@ -8,6 +8,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -24,7 +27,12 @@ import {
 import logoImg from '../../assets/logo.png';
 
 const SignIn: React.FC = () => {
+    const formRef = useRef<FormHandles>(null);
     const navigation = useNavigation();
+
+    const handleSignIn = useCallback((data: object) => {
+        console.log(data)
+    }, []);
 
     return (
         <>
@@ -44,24 +52,28 @@ const SignIn: React.FC = () => {
                             <Title>Faça seu logon</Title>
                         </View>
 
-                        <Input
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            name="email"
-                            icon="mail"
-                            placeholder="E-mail"
-                            returnKeyType="next"
-                        />
-                        <Input
-                            name="password"
-                            icon="lock"
-                            placeholder="Senha"
-                            secureTextEntry
-                            returnKeyType="send"
-                        />
+                        <Form ref={formRef} onSubmit={handleSignIn}>
+                            <Input
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                                name="email"
+                                icon="mail"
+                                placeholder="E-mail"
+                                returnKeyType="next"
+                            />
+                            <Input
+                                name="password"
+                                icon="lock"
+                                placeholder="Senha"
+                                secureTextEntry
+                                returnKeyType="send"
+                            />
 
-                        <Button onPress={() => console.log('clicou')}>Entrar</Button>
+                            <Button onPress={() => formRef.current?.submitForm()}>
+                                Entrar
+                            </Button>
+                        </Form>
 
                         <ForgotPassword>
                             <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
