@@ -4,16 +4,20 @@ import {
     KeyboardAvoidingView, 
     Platform, 
     ScrollView, 
-    View 
+    View,
+    Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import * as Yup from 'yup';
 
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+
+import getValidationErrors from '../../utils/getValidationErrors';
 
 import { 
     Container, 
@@ -24,13 +28,49 @@ import {
 
 import logoImg from '../../assets/logo.png';
 
+interface SignUpFormData {
+    name: string;
+    email: string;
+    password: string;
+}
+
 const SignUp: React.FC = () => {
     const formRef = useRef<FormHandles>(null);
     const navigation = useNavigation();
 
-    const handleSignUp = useCallback((data: object) => {
-        console.log(data)
-    }, []);
+    const handleSignUp = useCallback(
+        async (data: SignUpFormData) => {
+          formRef.current?.setErrors({});
+    
+          try {
+            const schema = Yup.object().shape({
+              name: Yup.string().required('Nome obrigatorio'),
+              email: Yup.string()
+                .required('E-mail obrigatorio')
+                .email('Digite um email valido'),
+              password: Yup.string().required('Senha obrigatoria'),
+            });
+    
+            await schema.validate(data, {
+              abortEarly: false,
+            });
+    
+            // await api.post('/users', data);
+    
+            // history.push('/');
+          } catch (err) {
+            if (err instanceof Yup.ValidationError) {
+              const errors = getValidationErrors(err);
+    
+              formRef.current?.setErrors(errors);
+            }
+    
+            Alert.alert(
+                'Erro no cadastro', 
+                'Ocorreu um erro ao fazer o cadastro, tente novamente'
+            );
+          }
+        }, []);
 
     return (
         <>
