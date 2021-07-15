@@ -42,9 +42,7 @@ const SignIn: React.FC = () => {
     const formRef = useRef<FormHandles>(null);
     const navigation = useNavigation();
 
-    const { signIn,user } = useAuth();
-
-    console.log(user);
+    const { signIn } = useAuth();
 
     const handleSignIn = useCallback(
         async (data: SignInFormData) => {
@@ -67,7 +65,6 @@ const SignIn: React.FC = () => {
               password: data.password,
             });
     
-            // history.push('/dashboard');
           } catch (err) {
             if (err instanceof Yup.ValidationError) {
               const errors = getValidationErrors(err);
@@ -80,7 +77,7 @@ const SignIn: React.FC = () => {
                 'Ocorreu um erro ao fazer login, cheque as credenciais'
             );
           }
-        },[]);
+        },[signIn]);
     
 
     return (
