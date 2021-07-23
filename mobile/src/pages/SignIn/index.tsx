@@ -40,15 +40,17 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
     const formRef = useRef<FormHandles>(null);
+    const passwordInputRef = useRef<TextInput>(null);
+
     const navigation = useNavigation();
+    const { signIn, user } = useAuth();
 
-    const { signIn } = useAuth();
+    console.log(user)
 
-    const handleSignIn = useCallback(
-        async (data: SignInFormData) => {
-          formRef.current?.setErrors({});
-    
-          try {
+    const handleSignIn = useCallback(async (data: SignInFormData) => {
+        try {
+            formRef.current?.setErrors({});
+
             const schema = Yup.object().shape({
               email: Yup.string()
                 .required('E-mail obrigatorio')
@@ -68,8 +70,9 @@ const SignIn: React.FC = () => {
           } catch (err) {
             if (err instanceof Yup.ValidationError) {
               const errors = getValidationErrors(err);
-    
               formRef.current?.setErrors(errors);
+
+              return
             }
 
             Alert.alert(
@@ -107,13 +110,20 @@ const SignIn: React.FC = () => {
                                 icon="mail"
                                 placeholder="E-mail"
                                 returnKeyType="next"
+                                onSubmitEditing={() => {
+                                    passwordInputRef.current?.focus();
+                                }}
                             />
                             <Input
+                                ref={passwordInputRef}
                                 name="password"
                                 icon="lock"
                                 placeholder="Senha"
                                 secureTextEntry
                                 returnKeyType="send"
+                                onSubmitEditing={() => {
+                                formRef.current?.submitForm();
+                                }}
                             />
 
                             <Button onPress={() => formRef.current?.submitForm()}>
