@@ -1,4 +1,6 @@
 import styled from 'styled-components/native';
+import { FlatList } from 'react-native';
+import { Provider } from './index';
 
 export const Container = styled.View`
     flex: 1
@@ -20,9 +22,9 @@ export const HeaderTitle = styled.Text`
     line-height: 28px;
 `;
 
-export const ProfileButton = styled.TouchableOpacity`
+export const ProfileButton = styled.TouchableOpacity``;
 
-`;
+export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)``;
 
 export const UserAvatar = styled.Image`
     width: 56px;
