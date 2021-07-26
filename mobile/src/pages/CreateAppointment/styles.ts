@@ -11,7 +11,9 @@ interface ProviderNameProps {
     selected: boolean;
 }
 
-export const BackButton = styled.TouchableOpacity``;
+export const BackButton = styled.View``;
+
+export const Calendar = styled.TouchableOpacity``;
 
 export const Container = styled.View`
     flex: 1;
@@ -31,6 +33,21 @@ export const HeaderTitle = styled.Text`
     font-size: 20px;
     font-family: 'RobotoSlab-Regular';
     margin-left: 16px;
+`;
+
+export const OpenDatePickerButton = styled(RectButton)`
+    height: 46px;
+    background: #ff9900;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 24px;
+`;
+
+export const OpenDatePickerButtonText = styled.Text`
+    font-family: 'RobotoSlab-Medium';
+    font-size: 16px;
+    color: #232129;
 `;
 
 export const ProviderAvatar = styled.Image`
@@ -61,6 +78,13 @@ export const ProviderName = styled.Text<ProviderNameProps>`
     font-family: 'RobotoSlab-Medium';
     font-size: 16px;
     color: ${props => (props.selected ? '#232129' : '#f4ede8')}
+`;
+
+export const Title = styled.Text`
+    font-family: 'RobotoSlab-Medium';
+    color: #f4ede8;
+    font-size: 24px;
+    margin: 0 24px 24px;
 `;
 
 export const UseAvatar = styled.Image`
