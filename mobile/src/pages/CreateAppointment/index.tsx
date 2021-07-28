@@ -87,7 +87,7 @@ const CreateAppointment: React.FC = () => {
             </Header>
 
             <ProvidersListContainer>
-                <ProvidersList 
+                <ProvidersList
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     data={providers}
