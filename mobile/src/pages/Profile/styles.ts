@@ -20,8 +20,8 @@ export const Title = styled.Text`
 `;
 
 export const UserAvatar = styled.Image`
-    width: 186px;
-    height: 186px;
+    width: 146px;
+    height: 146px;
     border-radius: 98px;
     margin-top: 64px;
     align-self: center;

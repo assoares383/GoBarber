@@ -74,14 +74,15 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({
         color={isFocused || isField ? '#ff9000' : '#666360'} />
       <TextInput
         ref={inputElementRef}
+        keyboardAppearance="dark"
         placeholderTextColor="#666360"
         defaultValue={defaultValue}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         onChangeText={(value) => {
-          inputValueRef.current.value = value
+          inputValueRef.current.value = value;
         }}
-        { ...rest }
+        {...rest}
       />
     </Container>
   )

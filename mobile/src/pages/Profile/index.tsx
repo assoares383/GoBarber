@@ -27,11 +27,13 @@ import { BackButton, Container, Title, UserAvatar, UserAvatarButton } from './st
 interface ProfileFormData {
     name: string;
     email: string;
+    old_password: string;
     password: string;
+    password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const formRef = useRef<FormHandles>(null);
     const navigation = useNavigation();
 
@@ -42,43 +44,74 @@ const Profile: React.FC = () => {
 
     const handleSaveProfile = useCallback(
         async (data: ProfileFormData) => {
-          formRef.current?.setErrors({});
-    
           try {
+            formRef.current?.setErrors({});
+
             const schema = Yup.object().shape({
-              name: Yup.string().required('Nome obrigatorio'),
-              email: Yup.string()
-                .required('E-mail obrigatorio')
-                .email('Digite um email valido'),
-              password: Yup.string().required('Senha obrigatoria'),
+                name: Yup.string().required('Nome obrigatório'),
+                email: Yup.string()
+                .required('E-mail obrigatório')
+                .email('Digite um e-mail válido'),
+                old_password: Yup.string(),
+                password: Yup.string().when('old_password', {
+                is: (val: string) => !!val.length,
+                then: Yup.string().required('Campo obrigatório'),
+                otherwise: Yup.string(),
+                }),
+                password_confirmation: Yup.string()
+                .when('old_password', {
+                    is: (val: string) => !!val.length,
+                    then: Yup.string().required('Campo obrigatório'),
+                    otherwise: Yup.string(),
+                })
+                .oneOf([Yup.ref('password'), null], 'Confirmação incorreta'),
             });
-    
+
             await schema.validate(data, {
-              abortEarly: false,
+                abortEarly: false,
             });
-    
-            await api.post('/users', data);
-    
+
+            const {
+                name, email, old_password, password, password_confirmation
+            } = data;
+
+            const formData = {
+                name, email,
+                ...(old_password
+                    ? {
+                        old_password,
+                        password,
+                        password_confirmation
+                    } : {}
+                )
+            }
+
+            const response = await api.put('/profile', formData);
+
+            updateUser(response.data);
+
             Alert.alert(
-                'Cadastro realizado com sucesso!', 
-                'Você já pode fazer login na aplicação.'
+                'Perfil atualizado com sucesso!',
+                'As informações do perfil foram atualizadas.',
             );
 
             navigation.goBack();
-          } catch (err) {
+        } catch (err) {
             if (err instanceof Yup.ValidationError) {
-              const errors = getValidationErrors(err);
-    
-              formRef.current?.setErrors(errors);
+                const errors = getValidationErrors(err);
+        
+                formRef.current?.setErrors(errors);
+        
+                return;
+              }
+        
+              Alert.alert(
+                'Erro na atualização do perfil',
+                'Ocorreu um erro ao atualizar seu perfil, tente novamente.',
+              );
             }
-    
-            Alert.alert(
-                'Erro no cadastro', 
-                'Ocorreu um erro ao fazer o cadastro, tente novamente'
-            );
-          }
         }, 
-    [navigation]);
+    [navigation, updateUser]);
 
     const handleGoBack = useCallback(() => {
         navigation.goBack();
