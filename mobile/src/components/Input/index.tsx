@@ -14,6 +14,7 @@ import { Container, TextInput, Icon } from './styles';
 interface InputProps extends TextInputProps {
   name: string;
   icon: string;
+  containerStyle?: {};
 }
 
 interface InputValueReference {
@@ -25,7 +26,7 @@ interface InputRef {
 }
 
 const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({
-  name, icon, ...rest}, ref) => {
+  name, icon, containerStyle = {}, ...rest}, ref) => {
 
   const inputElementRef = useRef<any>(null);
 
